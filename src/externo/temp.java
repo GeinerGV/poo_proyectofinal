@@ -1,6 +1,9 @@
+package externo;
+
 import javax.swing.*;
 import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 import java.awt.*;
+
 public class Demo {
 
     JFrame frame = new JFrame("");
