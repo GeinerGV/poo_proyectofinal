@@ -18,11 +18,17 @@ import edu.usil.infosil.notas.dto.CursoDTO;
 
 public class CursosParser {
 	static final String CURSO = "curso";
-	static final String ID = "id";
-	static final String CODE = "code";
-	static final String CREDITOS = "creditos";
+	static final String C_ID = "id";
+	static final String C_CODE = "code";
+	static final String C_CREDITOS = "creditos";
+	static final String CURSOSCNT = "cursos";
+	static final String CCNT_SYNC = "sync";
 
-	public List<CursoDTO> read(String pathFile) {
+	public LocalDateTime getLastSync(String pathFile) {
+
+	}
+
+	public static List<CursoDTO> readAll(String pathFile) {
 		List<CursoDTO> cursos = new ArrayList<CursoDTO>();
 		try {
 			XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -38,19 +44,19 @@ public class CursosParser {
 						Iterator<Attribute> atributos = event.asStartElement().getAttributes();
 						while (atributos.hasNext()) {
 							Attribute atributo = atributos.next();
-							if (atributo.getName().toString().equals(ID)) {
+							if (atributo.getName().toString().equals(C_ID)) {
 								try {
 									curso.setId(Integer.parseInt(atributo.getValue()));
 								} catch (Exception e) {
-									System.out.println("ID: valor no entero > " + atributo.getValue());
+									System.out.println("C_ID: valor no entero > " + atributo.getValue());
 								}
-							} else if (atributo.getName().toString().equals(CODE)) {
+							} else if (atributo.getName().toString().equals(C_CODE)) {
 								curso.setCode(atributo.getValue());
-							} else if (atributo.getName().toString().equals(CREDITOS)) {
+							} else if (atributo.getName().toString().equals(C_CREDITOS)) {
 								try {
 									curso.setCreditos(Integer.parseInt(atributo.getValue()));
 								} catch (Exception e) {
-									System.out.println("CREDITOS: valor no entero > " + atributo.getValue());
+									System.out.println("C_CREDITOS: valor no entero > " + atributo.getValue());
 								}
 							}
 						}

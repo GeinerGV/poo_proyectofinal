@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8">
 <ciclos>
 	<ciclo id="2018-02">
-		<cursomatriculado id="1" fillgaps="19">
+		<cursomatriculado id="4" fillgaps="19">
 			<newnota pos="1.1.1">17</newnota>
 			<newnota pos="1.2">20</newnota>
 		</cursomatriculado>
