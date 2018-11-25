@@ -1,10 +1,13 @@
 package edu.usil.infosil.notas.dto;
 
+import java.sql.Timestamp;
+
 public class CursoDTO {
 	private int id;
 	private String code;
 	private int creditos;
 	private String nombre;
+	private Timestamp fechaMod;
 	
 	public int getId() {
 		return id;
@@ -29,6 +32,12 @@ public class CursoDTO {
 	}
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+	public Timestamp getFechaMod() {
+		return fechaMod;
+	}
+	public void setFechaMod(Timestamp fechaMod) {
+		this.fechaMod = fechaMod;
 	}
 	@Override
 	public String toString() {

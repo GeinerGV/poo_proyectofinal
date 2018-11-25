@@ -1,2 +1,2 @@
-# poo_proyectofinal
+# Notas infosil
 Proyecto Final de POO

@@ -8,8 +8,6 @@ CREATE TABLE `tbcursos` (
   `NOMBRE` varchar(150) NOT NULL,
   `CODE` char(50) NOT NULL,
   `CREDITOS` int(10) NOT NULL,
-  `PERIODOANO` year,
-  `PERIODONUM` int(1),
   `FECHAMOD` datetime,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7;

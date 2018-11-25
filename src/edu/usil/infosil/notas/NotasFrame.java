@@ -11,20 +11,27 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.WindowConstants;
 import javax.swing.GroupLayout.Alignment;
 
+import edu.usil.infosil.notas.dao.NotasImpl;
 import edu.usil.infosil.notas.dto.CursoDTO;
 import edu.usil.infosil.xml.read.CursosParser;
+
+import com.placeholder.PlaceHolder;
 
 public class NotasFrame extends JFrame {
 
@@ -57,6 +64,11 @@ public class NotasFrame extends JFrame {
 			jCBsearcher.setModel(new DefaultComboBoxModel<>(new String[] {}));
 			jCBsearcher.setSelectedItem("");
 			JButton jBtnSearch = new JButton("Buscar");
+
+			JLabel jLblPerido = new JLabel("Periodo Académico:");
+			JTextField jTxtfPerido = new JTextField();
+			PlaceHolder holder = new PlaceHolder(jTxtfPerido, "2018-02, 2018-2, 18-2, ...");
+
 			gLayoutPnlBtnSel.setHorizontalGroup(
 				gLayoutPnlBtnSel.createSequentialGroup()
 				.addGap(20)
@@ -79,24 +91,36 @@ public class NotasFrame extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					String strParaCurso = ((String)jCBsearcher.getSelectedItem()).trim();
-					System.out.println(strParaCurso);
-					if (strParaCurso.length()>0) {
+					int selCurso = jCBsearcher.getSelectedIndex();
+					if (selCurso==-1 && strParaCurso.length()>0) {
 
 						CursosParser cparser= new CursosParser();
 						List<CursoDTO> listaCursosAlmacenados = cparser.read("src/test/recursos/xml/Cursos.xml");
+						List<CursoDTO> cursosCoincidentes = new ArrayList<CursoDTO>();
 						List<String> concidencias = new ArrayList<String>();
 
 						for (CursoDTO curso : listaCursosAlmacenados) {
 							if (strParaCurso.length()>=3) {
 								if ((curso.getNombre()).toLowerCase().contains(strParaCurso.toLowerCase())) {
-									concidencias.add(curso.getNombre() + " - " + curso.getCode());
+									cursosCoincidentes.add(curso);
 								}
-							} else {
-								if ((curso.getNombre()).toLowerCase().startsWith(strParaCurso.toLowerCase())) {
-									concidencias.add(curso.getNombre() + " - " + curso.getCode());
-								}
+							} else if ((curso.getNombre()).toLowerCase().startsWith(strParaCurso.toLowerCase())) {
+								cursosCoincidentes.add(curso);
 							}
 						}
+
+						NotasImpl impl = new NotasImpl();
+						cursosCoincidentes.addAll(impl.getSomeCursosCoincidentes(strParaCurso, cursosCoincidentes));
+						Collections.sort(cursosCoincidentes, new Comparator<CursoDTO>() {
+							@Override
+							public int compare(CursoDTO lhs, CursoDTO rhs) {
+								return lhs.getId() > rhs.getId() ? 1 : (lhs.getId()<rhs.getId() ? -1 : 0);
+							}
+						});
+						for (CursoDTO curso : cursosCoincidentes) {
+							concidencias.add(curso.getNombre() + " - " + curso.getCode());
+						}
+
 						jCBsearcher.setModel(new DefaultComboBoxModel<>(concidencias.toArray(new String[concidencias.size()])));
 						jCBsearcher.setSelectedItem(strParaCurso);
 						if (jCBsearcher.getItemCount()>0) jCBsearcher.showPopup();
