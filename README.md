@@ -15,4 +15,4 @@ El software contendrá lo siguiente:
 Esta ventana esta divida en dos paneles:
 
 El primer panel (Barra de menú superior) contiene tres botones de navegación (Seleccionar un curso, Crear un curso, Mis cursos)
-[Barra de menús superior](docs/images/Topbar.png)
+![Barra de menús superior](docs/images/Topbar.png)
