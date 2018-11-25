@@ -135,8 +135,7 @@ public class NotasFrame extends JFrame {
 
 		// listElesPnlBtnSel.add(LocalDateTime.now());
 		if (selCurso==-1 && strParaCurso.length()>0) {
-			CursosParser cparser= new CursosParser();
-			List<CursoDTO> listaCursosAlmacenados = cparser.read("src/test/recursos/xml/Cursos.xml");
+			List<CursoDTO> listaCursosAlmacenados = CursosParser.readAll("src/test/recursos/xml/Cursos.xml");
 			List<CursoDTO> cursosCoincidentes = new ArrayList<CursoDTO>();
 			List<String> concidencias = new ArrayList<String>();
 			
@@ -175,6 +174,10 @@ public class NotasFrame extends JFrame {
 			if (jCBsearcher.getItemCount()>0) jCBsearcher.showPopup();
 			cargardorDeDatos.start();
 		}
+	}
+
+	private void actualizarItemsjCBCursosSearch(List<String> listaCursos, LocalDateTime tiempo) {
+		
 	}
 
 	private void initComponents() {
