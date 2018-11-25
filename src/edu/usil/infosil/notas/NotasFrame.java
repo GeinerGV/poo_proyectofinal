@@ -1,10 +1,13 @@
 package edu.usil.infosil.notas;
 
+// import com.placeholder;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -18,6 +21,7 @@ import java.util.List;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -29,12 +33,12 @@ import javax.swing.GroupLayout.Alignment;
 
 import edu.usil.infosil.notas.dao.NotasImpl;
 import edu.usil.infosil.notas.dto.CursoDTO;
+import edu.usil.infosil.notas.updater.CargarCursosBuscadosDB;
 import edu.usil.infosil.xml.read.CursosParser;
-
-import com.placeholder.PlaceHolder;
 
 public class NotasFrame extends JFrame {
 
+	private static final long serialVersionUID = 1L;
 	private int btnSel;
 	private final Color[] colores = {Color.gray, Color.orange};
 	
@@ -42,6 +46,10 @@ public class NotasFrame extends JFrame {
 		btnSel = -1;
 		setTitle("Administrador de Notas");
 		initComponents();
+	}
+
+	public int getBtnSel() {
+		return btnSel;
 	}
 
 	private void selectBtn(int num) {
@@ -59,7 +67,7 @@ public class NotasFrame extends JFrame {
 		listElesPnlBtnSel = new ArrayList<>();
 		if (btnSel == 0) {
 			jPnlBtnSel.setLayout(gLayoutPnlBtnSel);
-			JComboBox<String> jCBsearcher = new JComboBox<>();
+			JComboBox<String> jCBsearcher = new JComboBox<String>();
 			jCBsearcher.setEditable(true);
 			jCBsearcher.setModel(new DefaultComboBoxModel<>(new String[] {}));
 			jCBsearcher.setSelectedItem("");
@@ -67,66 +75,105 @@ public class NotasFrame extends JFrame {
 
 			JLabel jLblPerido = new JLabel("Periodo Académico:");
 			JTextField jTxtfPerido = new JTextField();
-			PlaceHolder holder = new PlaceHolder(jTxtfPerido, "2018-02, 2018-2, 18-2, ...");
+			// Class.forName("com.placeholder.PlaceHolder");
+			// placeholder.PlaceHolder holder = new placeholder.PlaceHolder(jTxtfPerido, "2018-02, 2018-2, 18-2, ...");
+			// Class.forName("com.placeholder.PlaceHolder").getClass().(jTxtfPerido, "f");// (jTxtfPerido, "2018-02, 2018-2, 18-2, ...");
+			listElesPnlBtnSel.add(0, jCBsearcher);
+			listElesPnlBtnSel.add(1, jBtnSearch);
+			listElesPnlBtnSel.add(2,jLblPerido);
+			listElesPnlBtnSel.add(3,jTxtfPerido);
+			
+			// TODO: Creando el primer hilo de recogida de datos y estableciendo la ventana
+			CargarCursosBuscadosDB.setVentana(this);
+			// CargarCursosBuscadosDB cargarCursosDB = new CargarCursosBuscadosDB("", new ArrayList<CursoDTO>(), LocalDateTime.now());
+			CargarCursosBuscadosDB cargarCursosDB = null;
+
+			jBtnSearch.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (cargarCursosDB!=null) cargarCursosDB.Detenerse();
+					buscarCursosActionPerformed(e, cargarCursosDB);
+				}
+			});
 
 			gLayoutPnlBtnSel.setHorizontalGroup(
-				gLayoutPnlBtnSel.createSequentialGroup()
-				.addGap(20)
-				.addComponent(jCBsearcher, (30+175*3+30), GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addGap(5)
-				.addComponent(jBtnSearch)
-				.addGap(20)
+				gLayoutPnlBtnSel.createParallelGroup(Alignment.CENTER)
+				.addGroup(gLayoutPnlBtnSel.createSequentialGroup()
+					.addGap(20)
+					.addComponent(jCBsearcher, (30+175*3+30), GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(5)
+					.addComponent(jBtnSearch)
+					.addGap(20)
+				)
+				.addGroup(gLayoutPnlBtnSel.createSequentialGroup()
+					.addComponent(jLblPerido)
+					.addComponent(jTxtfPerido, 300, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+				)
 			);
 			gLayoutPnlBtnSel.setVerticalGroup(
-				gLayoutPnlBtnSel.createParallelGroup()
-				.addGap(10)
-				.addComponent(jCBsearcher, 35, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addComponent(jBtnSearch, 35, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-				.addGap(10)
+				gLayoutPnlBtnSel.createSequentialGroup()
+				.addGroup(gLayoutPnlBtnSel.createParallelGroup()
+					.addGap(10)
+					.addComponent(jCBsearcher, 35, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addComponent(jBtnSearch, 35, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+				)
+				.addGroup(gLayoutPnlBtnSel.createParallelGroup(Alignment.CENTER)
+					.addComponent(jLblPerido)
+					.addComponent(jTxtfPerido)
+				)
 			);
 			// listElesPnlBtnSel.add(new JComboBox<>());
 			// listElesPnlBtnSel.get(0).
-			jBtnSearch.addActionListener(new ActionListener(){
+		}
+	}
+
+	private void buscarCursosActionPerformed(ActionEvent evt, CargarCursosBuscadosDB cargadorDeDatosDB) {
+		JComboBox<String> jCBsearcher = (JComboBox<String>)listElesPnlBtnSel.get(0);
+		String strParaCurso = ((String)jCBsearcher.getSelectedItem()).trim();
+		int selCurso = jCBsearcher.getSelectedIndex();
+
+		// listElesPnlBtnSel.add(LocalDateTime.now());
+		if (selCurso==-1 && strParaCurso.length()>0) {
+			CursosParser cparser= new CursosParser();
+			List<CursoDTO> listaCursosAlmacenados = cparser.read("src/test/recursos/xml/Cursos.xml");
+			List<CursoDTO> cursosCoincidentes = new ArrayList<CursoDTO>();
+			List<String> concidencias = new ArrayList<String>();
 			
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					String strParaCurso = ((String)jCBsearcher.getSelectedItem()).trim();
-					int selCurso = jCBsearcher.getSelectedIndex();
-					if (selCurso==-1 && strParaCurso.length()>0) {
+			cargadorDeDatosDB = new CargarCursosBuscadosDB(strParaCurso, cursosCoincidentes, LocalDateTime.now(), this);
 
-						CursosParser cparser= new CursosParser();
-						List<CursoDTO> listaCursosAlmacenados = cparser.read("src/test/recursos/xml/Cursos.xml");
-						List<CursoDTO> cursosCoincidentes = new ArrayList<CursoDTO>();
-						List<String> concidencias = new ArrayList<String>();
-
-						for (CursoDTO curso : listaCursosAlmacenados) {
-							if (strParaCurso.length()>=3) {
-								if ((curso.getNombre()).toLowerCase().contains(strParaCurso.toLowerCase())) {
-									cursosCoincidentes.add(curso);
-								}
-							} else if ((curso.getNombre()).toLowerCase().startsWith(strParaCurso.toLowerCase())) {
-								cursosCoincidentes.add(curso);
-							}
-						}
-
-						NotasImpl impl = new NotasImpl();
-						cursosCoincidentes.addAll(impl.getSomeCursosCoincidentes(strParaCurso, cursosCoincidentes));
-						Collections.sort(cursosCoincidentes, new Comparator<CursoDTO>() {
-							@Override
-							public int compare(CursoDTO lhs, CursoDTO rhs) {
-								return lhs.getId() > rhs.getId() ? 1 : (lhs.getId()<rhs.getId() ? -1 : 0);
-							}
-						});
-						for (CursoDTO curso : cursosCoincidentes) {
-							concidencias.add(curso.getNombre() + " - " + curso.getCode());
-						}
-
-						jCBsearcher.setModel(new DefaultComboBoxModel<>(concidencias.toArray(new String[concidencias.size()])));
-						jCBsearcher.setSelectedItem(strParaCurso);
-						if (jCBsearcher.getItemCount()>0) jCBsearcher.showPopup();
+			for (CursoDTO curso : listaCursosAlmacenados) {
+				if (strParaCurso.length()>=3) {
+					if ((curso.getNombre()).toLowerCase().contains(strParaCurso.toLowerCase())) {
+						cursosCoincidentes.add(curso);
 					}
+				} else if ((curso.getNombre()).toLowerCase().startsWith(strParaCurso.toLowerCase())) {
+					cursosCoincidentes.add(curso);
+				}
+			}
+
+			/* NotasImpl impl = new NotasImpl();
+			cursosCoincidentes.addAll(impl.getSomeCursosCoincidentes(strParaCurso, cursosCoincidentes));
+			Collections.sort(cursosCoincidentes, new Comparator<CursoDTO>() {
+				@Override
+				public int compare(CursoDTO lhs, CursoDTO rhs) {
+					return lhs.getId() > rhs.getId() ? 1 : (lhs.getId()<rhs.getId() ? -1 : 0);
+				}
+			}); */
+			Collections.sort(cursosCoincidentes, new Comparator <CursoDTO>() {
+				@Override
+				public int compare(CursoDTO lhs, CursoDTO rhs) {
+					return lhs.getId() > rhs.getId() ? 1 : (lhs.getId()<rhs.getId() ? -1 : 0);
 				}
 			});
+			for (CursoDTO curso : cursosCoincidentes) {
+				concidencias.add(curso.getNombre() + " - " + curso.getCode());
+			}
+
+			jCBsearcher.setModel(new DefaultComboBoxModel<String>(concidencias.toArray(new String[concidencias.size()])));
+			jCBsearcher.setSelectedItem(strParaCurso);
+			if (jCBsearcher.getItemCount()>0) jCBsearcher.showPopup();
+			cargardorDeDatos.start();
 		}
 	}
 
@@ -207,7 +254,7 @@ public class NotasFrame extends JFrame {
 	private JPanel jPnlTopBar;
 	private JPanel jPnlBtnSel;
 	
-	private List listElesPnlBtnSel;
+	private List<JComponent> listElesPnlBtnSel;
 
 	private JButton[] listTopBarBtns;
 	private JComboBox<String> jCBCiclosUser;

@@ -12,9 +12,12 @@ import edu.usil.infosil.notas.dto.CursoDTO;
 
 public class NotasImpl {
 	private Connection conn = null;
-	private String url = "jdbc:mysql://127.0.0.1:3306/infosildb";
+	private Boolean continuar;
+	// private String url = "jdbc:mysql://127.0.0.1:3306/infosildb";
+	private String url = "jdbc:mysql://mysql.freehostia.com/geigra_gegeve";
 
 	public NotasImpl() {
+		continuar = true;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 		} catch (Exception e) {
@@ -24,7 +27,8 @@ public class NotasImpl {
 
 	private Connection getConnection() {
 		try {
-			conn = DriverManager.getConnection(url, "root", "8/rExw|e~?X7\\OD;!ecK's.eS2E@FhHOAFIvyOMp");
+			// conn = DriverManager.getConnection(url, "root", "8/rExw|e~?X7\\OD;!ecK's.eS2E@FhHOAFIvyOMp");
+			conn = DriverManager.getConnection(url, "geigra_gegeve", "RaW:XT.r!cH=pVovd6d'");
 		} catch (Exception e) {
 			System.out.println("No se pudo obtener conexion");
 		}
@@ -38,7 +42,7 @@ public class NotasImpl {
 		for (CursoDTO cursoCoincidente: listCursosEvitar) {
 			sql += " and id!="+cursoCoincidente.getId();
 		}
-		sql += " LIMIT 5;";
+		sql += " LIMIT 5 ORDER BY id ASC;";
 		List<CursoDTO> cursos = new ArrayList<CursoDTO>();
 		try {
 			this.getConnection();
@@ -68,4 +72,9 @@ public class NotasImpl {
 		// return nombres.toArray(new String[nombres.size()]);
 		return cursos;
 	}
+
+	public void Detenerse() {
+		continuar = false;
+	}
+
 }
