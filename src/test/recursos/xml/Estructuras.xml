@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8">
+<estructuras>
+	<estructura id="1" curso="1">
+		<categoria nombre="Evaluación Permanente" peso="0.5">
+			<categoria nombre="Promedio de Prácticas" peso="0.6">
+				<nota nombre="Práctica 1" />
+				<nota nombre="Práctica 2" />
+			</categoria>
+			<nota nombre="Trabajos" peso="0.4" />
+		</categoria>
+		<nota nombre="Examen Parcial" peso="0.25" />
+		<nota nombre="Examen Final" peso="0.25" />
+	</estructura>
+</estructuras>

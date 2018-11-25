@@ -1,4 +1,4 @@
-package de.vogella.xml.stax.writer;
+package externo;
 
 import java.io.FileOutputStream;
 
@@ -12,7 +12,7 @@ import javax.xml.stream.events.StartDocument;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 
-public class StaxWriter {
+public class writerXML {
     private String configFile;
 
     public void setFile(String configFile) {
