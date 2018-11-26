@@ -172,7 +172,7 @@ public class NotasFrame extends JFrame {
 			jCBsearcher.setModel(new DefaultComboBoxModel<String>(concidencias.toArray(new String[concidencias.size()])));
 			jCBsearcher.setSelectedItem(strParaCurso);
 			if (jCBsearcher.getItemCount()>0) jCBsearcher.showPopup();
-			cargardorDeDatos.start();
+			// cargardorDeDatos.start();
 		}
 	}
 
