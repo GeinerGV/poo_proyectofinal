@@ -19,7 +19,7 @@ public class NotasImpl {
 	public NotasImpl() {
 		continuar = true;
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+			Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
 		} catch (Exception e) {
 			System.out.println("No se pudo cargar el driver");
 		}
