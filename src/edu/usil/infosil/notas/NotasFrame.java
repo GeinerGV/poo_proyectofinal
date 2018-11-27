@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -82,17 +83,11 @@ public class NotasFrame extends JFrame {
 			listElesPnlBtnSel.add(1, jBtnSearch);
 			listElesPnlBtnSel.add(2,jLblPerido);
 			listElesPnlBtnSel.add(3,jTxtfPerido);
-			
-			// TODO: Creando el primer hilo de recogida de datos y estableciendo la ventana
-			CargarCursosBuscadosDB.setVentana(this);
-			// CargarCursosBuscadosDB cargarCursosDB = new CargarCursosBuscadosDB("", new ArrayList<CursoDTO>(), LocalDateTime.now());
-			CargarCursosBuscadosDB cargarCursosDB = null;
 
 			jBtnSearch.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					if (cargarCursosDB!=null) cargarCursosDB.Detenerse();
-					buscarCursosActionPerformed(e, cargarCursosDB);
+					buscarCursosActionPerformed(e);
 				}
 			});
 
@@ -128,7 +123,7 @@ public class NotasFrame extends JFrame {
 		}
 	}
 
-	private void buscarCursosActionPerformed(ActionEvent evt, CargarCursosBuscadosDB cargadorDeDatosDB) {
+	private void buscarCursosActionPerformed(ActionEvent evt) {
 		JComboBox<String> jCBsearcher = (JComboBox<String>)listElesPnlBtnSel.get(0);
 		String strParaCurso = ((String)jCBsearcher.getSelectedItem()).trim();
 		int selCurso = jCBsearcher.getSelectedIndex();
@@ -138,8 +133,6 @@ public class NotasFrame extends JFrame {
 			List<CursoDTO> listaCursosAlmacenados = CursosParser.readAll("src/test/recursos/xml/Cursos.xml");
 			List<CursoDTO> cursosCoincidentes = new ArrayList<CursoDTO>();
 			List<String> concidencias = new ArrayList<String>();
-			
-			cargadorDeDatosDB = new CargarCursosBuscadosDB(strParaCurso, cursosCoincidentes, LocalDateTime.now(), this);
 
 			for (CursoDTO curso : listaCursosAlmacenados) {
 				if (strParaCurso.length()>=3) {
@@ -176,9 +169,9 @@ public class NotasFrame extends JFrame {
 		}
 	}
 
-	private void actualizarItemsjCBCursosSearch(List<String> listaCursos, LocalDateTime tiempo) {
+	/* private void actualizarItemsjCBCursosSearch(List<String> listaCursos, LocalDateTime tiempo) {
 		
-	}
+	} */
 
 	private void initComponents() {
 		jPnlTopBar = new JPanel();
