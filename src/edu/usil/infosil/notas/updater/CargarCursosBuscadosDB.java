@@ -1,6 +1,8 @@
 package edu.usil.infosil.notas.updater;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import edu.usil.infosil.notas.NotasFrame;
@@ -23,7 +25,7 @@ public class CargarCursosBuscadosDB extends Thread {
 	public void run() {
 		try {
 			impl = new NotasImpl();
-			cursosCoincidentes.addAll(impl.getSomeCursosCoincidentes(strParaCurso, cursosCoincidentes));
+			cursosCoincidentes.addAll(impl.getSomeCursosCoincidentes(txt, cursosCoincidentes));
 			Collections.sort(cursosCoincidentes, new Comparator<CursoDTO>() {
 				@Override
 				public int compare(CursoDTO lhs, CursoDTO rhs) {
@@ -39,7 +41,7 @@ public class CargarCursosBuscadosDB extends Thread {
 		ventana = frame;
 	}
 
-	public void Detenerse() {
+	/* public void Detenerse() {
 		if (impl!=null) impl.Detenerse();
-	}
+	} */
 }
