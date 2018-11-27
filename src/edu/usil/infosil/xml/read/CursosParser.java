@@ -23,7 +23,7 @@ public class CursosParser {
 	static final String C_CREDITOS = "creditos";
 	static final String CURSOSCNT = "cursos";
 	static final String CCNT_SYNC = "sync";
-	private List<string> archivosCursos;
+	private List<String> archivosCursos = new ArrayList<String>();
 
 	public CursosParser(String file) {
 		archivosCursos.add(file);
@@ -35,9 +35,9 @@ public class CursosParser {
 		}
 	}
 
-	public LocalDateTime getLastSync(String pathFile) {
+	/* public LocalDateTime getLastSync(String pathFile) {
 
-	}
+	} */
 
 	public List<CursoDTO> readAll(int idx) {
 		return readAll(archivosCursos.get(idx));
