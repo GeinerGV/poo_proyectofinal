@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="UTF-8">
-<estructuras>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- <estructuras>
 	<estructura id="1" curso="1">
 		<categoria nombre="Evaluación Permanente" peso="0.5">
 			<categoria nombre="Promedio de Prácticas" peso="0.6">
@@ -11,4 +11,30 @@
 		<nota nombre="Examen Parcial" peso="0.25" />
 		<nota nombre="Examen Final" peso="0.25" />
 	</estructura>
+</estructuras> -->
+<estructuras>
+	<enuso>
+		<!-- <estructura
+			[<isdownload=""> <sync="yyyy-mm-dd hh:MM:ss">]
+			<from="{perido}">
+			<to="{periodo}">
+			<id="{estructuraID}">
+			<curso="{cursoID}">
+			[base="{estructuraID}"]
+			[has-childre=""]
+		/> -->
+		<!-- TODO: Lo que debe tener una estructura como elemento -->
+		<!-- 
+			* Perido de inicio de la estructura: el ciclo que creada la nueva estructura para el sílabo
+			* Perido de fin de la estructura: el último ciclo donde estuvo vigente dicha estructura
+			* Curso
+			* 
+		 -->
+		<estructura sync="2018-11-27 18:11:01" from="2017.01" id="1" curso="1" >
+		</estructura>
+	</enuso>
+	<usados>
+	</usados>
+	<sinuso>
+	</sinuso>
 </estructuras>
